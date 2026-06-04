@@ -1,0 +1,19 @@
+"use client";
+
+import { SectionCard } from "@/components/shared/layout/SectionCard";
+import Slider from "@/components/shared/input/Slider";
+import type { DatePickerStudioState } from "../types";
+
+type Props = {
+  state: DatePickerStudioState;
+  update: <K extends keyof DatePickerStudioState>(key: K, value: DatePickerStudioState[K]) => void;
+};
+
+export default function LayoutSection({ state, update }: Props) {
+  return (
+    <SectionCard title="Layout" subtitle="Component-native layout rhythm.">
+      <Slider label="Gap" value={state.gap} min={4} max={32} step={1} onChange={(value) => update("gap", value)} />
+      <Slider label="Padding" value={state.padding} min={10} max={40} step={1} onChange={(value) => update("padding", value)} />
+    </SectionCard>
+  );
+}

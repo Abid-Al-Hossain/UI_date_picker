@@ -1,0 +1,19 @@
+"use client";
+
+import { SectionCard } from "@/components/shared/layout/SectionCard";
+import Slider from "@/components/shared/input/Slider";
+import type { DatePickerStudioState } from "../types";
+
+type Props = {
+  state: DatePickerStudioState;
+  update: <K extends keyof DatePickerStudioState>(key: K, value: DatePickerStudioState[K]) => void;
+};
+
+export default function SizingSection({ state, update }: Props) {
+  return (
+    <SectionCard title="Sizing" subtitle="Width, height, and scale controls.">
+      <Slider label="Width" value={state.width} min={260} max={720} step={1} onChange={(value) => update("width", value)} />
+      <Slider label="Height" value={state.height} min={82} max={220} step={1} onChange={(value) => update("height", value)} />
+    </SectionCard>
+  );
+}
