@@ -14,7 +14,6 @@ export default function FocusSection({ state, update }: Props) {
   return (
     <SectionCard title="Focus" subtitle="Focus and selected-state affordances.">
       <Slider label="Focus ring" value={state.focusRing} min={0} max={8} step={1} onChange={(value) => update("focusRing", value)} />
-      <Switch label="Motion safe transition" checked={state.motion} onChange={(value) => update("motion", value)} />
     </SectionCard>
   );
 }

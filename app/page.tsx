@@ -42,7 +42,7 @@ export default function Page() {
   };
 
   const applyPreset = (preset: StudioPreset) => {
-    setState(preset.state);
+    setState({ ...DEFAULT_DATE_PICKER_STATE, ...(preset.state as Partial<DatePickerStudioState>) });
     setActivePresetId(preset.id);
     setPreviewResetKey((value) => value + 1);
   };
