@@ -32,9 +32,9 @@ function shellStyle(state: DatePickerStudioState): CSSProperties {
     padding: state.padding,
     gap: state.gap,
     borderRadius: buildRadius(state),
-    border: `${state.borderWidth}px solid ${invalid ? "#fb7185" : state.previewState === "focus" ? state.accent : state.border}`,
+    border: `${state.borderWidth}px solid ${invalid ? state.errorColor : state.previewState === "focus" ? state.accent : state.border}`,
     boxShadow: buildShadow(state),
-    background: state.background,
+    background: state.disabled && state.disabledUseCustomColors ? state.disabledBg : state.background,
     color: state.foreground,
     fontFamily: resolveFont(state),
     fontStyle: state.fontStyle,
@@ -61,52 +61,107 @@ export default function LivePreview({ state }: { state: DatePickerStudioState })
   const disabled = state.disabled || state.previewState === "disabled";
   const success = state.showSuccess && !invalid;
   const [value, setValue] = useState(() => normalizeDateValue(state.value, state.pickerType));
+  const [valueEnd, setValueEnd] = useState(() => normalizeDateValue(state.valueEnd, state.pickerType));
   const describedBy = `${state.id}-help`;
   const message = invalid ? state.errorText : success ? state.successText : state.showHelper ? state.helper : "";
+  const inputBorderColor = invalid ? state.errorColor : state.border;
 
   useEffect(() => {
     setValue(normalizeDateValue(state.value, state.pickerType));
-  }, [state.value, state.pickerType]);
+    setValueEnd(normalizeDateValue(state.valueEnd, state.pickerType));
+  }, [state.value, state.valueEnd, state.pickerType]);
+
+  const singleInput = (
+    <div className="flex items-center gap-2 rounded-2xl border px-3 py-2" style={{ borderColor: inputBorderColor, background: "rgba(255,255,255,.06)" }}>
+      {state.showCalendarIcon ? <span aria-hidden="true" style={{ color: state.accent }}>calendar</span> : null}
+      <input
+        id={state.id}
+        name={state.name}
+        title={state.title}
+        tabIndex={state.tabIndex}
+        dir={state.dir}
+        lang={state.lang}
+        type={state.pickerType}
+        value={value}
+        min={normalizeDateValue(state.min, state.pickerType)}
+        max={normalizeDateValue(state.max, state.pickerType)}
+        step={state.step}
+        required={state.required}
+        disabled={disabled}
+        readOnly={state.readOnly}
+        autoComplete={state.autocomplete}
+        inputMode={state.inputMode}
+        enterKeyHint={state.enterKeyHint}
+        aria-invalid={invalid || undefined}
+        aria-describedby={describedBy}
+        className="w-full bg-transparent outline-none"
+        style={{ color: state.foreground, fontSize: state.inputSize }}
+        onChange={(event) => setValue(event.target.value)}
+      />
+      {state.showClearAction && value && !disabled && !state.readOnly ? (
+        <button type="button" aria-label="Clear date" className="rounded-lg px-2" style={{ color: state.muted }} onClick={() => setValue("")}>
+          Clear
+        </button>
+      ) : null}
+    </div>
+  );
+
+  const rangeInputs = (
+    <div className="grid gap-2">
+      <div className="grid gap-1">
+        <label htmlFor={`${state.id}-start`} className="text-xs" style={{ color: state.muted }}>From</label>
+        <div className="flex items-center gap-2 rounded-2xl border px-3 py-2" style={{ borderColor: inputBorderColor, background: "rgba(255,255,255,.06)" }}>
+          {state.showCalendarIcon ? <span aria-hidden="true" style={{ color: state.accent }}>calendar</span> : null}
+          <input
+            id={`${state.id}-start`}
+            name={`${state.name}-start`}
+            type={state.pickerType}
+            value={value}
+            min={normalizeDateValue(state.min, state.pickerType)}
+            max={valueEnd || normalizeDateValue(state.max, state.pickerType)}
+            required={state.required}
+            disabled={disabled}
+            readOnly={state.readOnly}
+            aria-label="Range start date"
+            aria-describedby={describedBy}
+            className="w-full bg-transparent outline-none"
+            style={{ color: state.foreground, fontSize: state.inputSize }}
+            onChange={(event) => setValue(event.target.value)}
+          />
+        </div>
+      </div>
+      <div className="grid gap-1">
+        <label htmlFor={`${state.id}-end`} className="text-xs" style={{ color: state.muted }}>To</label>
+        <div className="flex items-center gap-2 rounded-2xl border px-3 py-2" style={{ borderColor: inputBorderColor, background: "rgba(255,255,255,.06)" }}>
+          {state.showCalendarIcon ? <span aria-hidden="true" style={{ color: state.accent }}>calendar</span> : null}
+          <input
+            id={`${state.id}-end`}
+            name={`${state.name}-end`}
+            type={state.pickerType}
+            value={valueEnd}
+            min={value || normalizeDateValue(state.min, state.pickerType)}
+            max={normalizeDateValue(state.max, state.pickerType)}
+            disabled={disabled}
+            readOnly={state.readOnly}
+            aria-label="Range end date"
+            aria-describedby={describedBy}
+            className="w-full bg-transparent outline-none"
+            style={{ color: state.foreground, fontSize: state.inputSize }}
+            onChange={(event) => setValueEnd(event.target.value)}
+          />
+        </div>
+      </div>
+    </div>
+  );
 
   return (
     <div style={shellStyle(state)} className="grid content-center">
-      <label htmlFor={state.id} style={{ fontSize: state.labelSize, fontWeight: state.fontWeight }}>
+      <label htmlFor={state.rangeMode ? `${state.id}-start` : state.id} style={{ fontSize: state.labelSize, fontWeight: state.fontWeight }}>
         {state.label}{state.required ? " *" : ""}
       </label>
       {state.description ? <p className="text-sm" style={{ color: state.muted }}>{state.description}</p> : null}
-      <div className="flex items-center gap-2 rounded-2xl border px-3 py-2" style={{ borderColor: invalid ? "#fb7185" : state.border, background: "rgba(255,255,255,.06)" }}>
-        {state.showCalendarIcon ? <span aria-hidden="true" style={{ color: state.accent }}>calendar</span> : null}
-        <input
-          id={state.id}
-          name={state.name}
-          title={state.title}
-          tabIndex={state.tabIndex}
-          dir={state.dir}
-          lang={state.lang}
-          type={state.pickerType}
-          value={value}
-          min={normalizeDateValue(state.min, state.pickerType)}
-          max={normalizeDateValue(state.max, state.pickerType)}
-          step={state.step}
-          required={state.required}
-          disabled={disabled}
-          readOnly={state.readOnly}
-          autoComplete={state.autocomplete}
-          inputMode={state.inputMode}
-          enterKeyHint={state.enterKeyHint}
-          aria-invalid={invalid || undefined}
-          aria-describedby={describedBy}
-          className="w-full bg-transparent outline-none"
-          style={{ color: state.foreground, fontSize: state.inputSize }}
-          onChange={(event) => setValue(event.target.value)}
-        />
-        {state.showClearAction && value && !disabled && !state.readOnly ? (
-          <button type="button" aria-label="Clear date" className="rounded-lg px-2" style={{ color: state.muted }} onClick={() => setValue("")}>
-            Clear
-          </button>
-        ) : null}
-      </div>
-      <small id={describedBy} style={{ color: invalid ? "#fb7185" : success ? "#22c55e" : state.muted }}>{message}</small>
+      {state.rangeMode ? rangeInputs : singleInput}
+      <small id={describedBy} style={{ color: invalid ? state.errorColor : success ? state.successColor : state.muted }}>{message}</small>
     </div>
   );
 }

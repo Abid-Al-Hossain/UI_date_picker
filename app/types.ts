@@ -1,4 +1,4 @@
-export type SectionId = "presets" | "basics" | "metadata" | "field" | "calendar" | "validation" | "layout" | "sizing" | "colors" | "border" | "radius" | "shadow" | "typography" | "focus" | "states" | "accessibility";
+export type SectionId = "presets" | "basics" | "metadata" | "field" | "calendar" | "validation" | "layout" | "sizing" | "colors" | "border" | "radius" | "shadow" | "typography" | "focus" | "states" | "disabled" | "accessibility";
 
 export type DatePickerStudioState = {
   label: string;
@@ -8,6 +8,7 @@ export type DatePickerStudioState = {
   successText: string;
   placeholder: string;
   value: string;
+  valueEnd: string;
   min: string;
   max: string;
   step: number;
@@ -20,6 +21,7 @@ export type DatePickerStudioState = {
   autocomplete: "off" | "bday" | "bday-day" | "bday-month" | "bday-year";
   inputMode: "none" | "text" | "numeric" | "decimal";
   enterKeyHint: "enter" | "done" | "go" | "next" | "search" | "send";
+  rangeMode: boolean;
   pickerType: "date" | "month" | "week" | "datetime-local";
   calendarDensity: "compact" | "balanced" | "spacious";
   firstDayOfWeek: "sunday" | "monday" | "saturday";
@@ -29,6 +31,12 @@ export type DatePickerStudioState = {
   showSuccess: boolean;
   required: boolean;
   disabled: boolean;
+  disabledOpacity: number;
+  disabledCursor: "not-allowed" | "default" | "pointer";
+  disabledUseCustomColors: boolean;
+  disabledBg: string;
+  disabledText: string;
+  disabledBorder: string;
   readOnly: boolean;
   invalid: boolean;
   width: number;
@@ -79,6 +87,8 @@ export type DatePickerStudioState = {
   muted: string;
   accent: string;
   border: string;
+  errorColor: string;
+  successColor: string;
   labelSize: number;
   inputSize: number;
   fontWeight: number;
@@ -156,6 +166,10 @@ export const SECTIONS: Array<{ id: SectionId; label: string }> = [
   {
     "id": "states",
     "label": "State Preview"
+  },
+  {
+    "id": "disabled",
+    "label": "Disabled"
   },
   {
     "id": "accessibility",

@@ -20,7 +20,8 @@ export default function FieldSection({ state, update }: Props) {
   "week",
   "datetime-local"
 ]} onChange={(value) => update("pickerType", value)} />
-      <Input label="Value" value={state.value} onChange={(value) => update("value", value)} />
+      <Input label="Value (start)" value={state.value} onChange={(value) => update("value", value)} />
+      {state.rangeMode && <Input label="Value (end)" value={state.valueEnd} onChange={(value) => update("valueEnd", value)} />}
       <Switch label="Calendar icon" checked={state.showCalendarIcon} onChange={(value) => update("showCalendarIcon", value)} />
       <Switch label="Clear action" checked={state.showClearAction} onChange={(value) => update("showClearAction", value)} />
     </SectionCard>
