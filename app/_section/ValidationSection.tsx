@@ -14,6 +14,7 @@ type Props = {
 export default function ValidationSection({ state, update }: Props) {
   return (
     <SectionCard title="Validation" subtitle="Required, range, and validation messaging.">
+      <div className="space-y-4">
       <Switch label="Required" checked={state.required} onChange={(value) => update("required", value)} />
       <Switch label="Read only" checked={state.readOnly} onChange={(value) => update("readOnly", value)} />
       <Input label="Min" value={state.min} onChange={(value) => update("min", value)} />
@@ -21,6 +22,7 @@ export default function ValidationSection({ state, update }: Props) {
       <Slider label="Step" value={state.step} min={1} max={30} step={1} onChange={(value) => update("step", value)} />
       <Input label="Error text" value={state.errorText} onChange={(value) => update("errorText", value)} />
       <Input label="Success text" value={state.successText} onChange={(value) => update("successText", value)} />
+    </div>
     </SectionCard>
   );
 }

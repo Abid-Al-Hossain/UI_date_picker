@@ -12,8 +12,10 @@ type Props = {
 export default function SizingSection({ state, update }: Props) {
   return (
     <SectionCard title="Sizing" subtitle="Width, height, and scale controls.">
+      <div className="space-y-4">
       <Slider label="Width" value={state.width} min={260} max={720} step={1} onChange={(value) => update("width", value)} />
       <Slider label="Height" value={state.height} min={82} max={220} step={1} onChange={(value) => update("height", value)} />
+    </div>
     </SectionCard>
   );
 }

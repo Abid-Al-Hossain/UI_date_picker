@@ -18,6 +18,7 @@ export default function CalendarSection({ state, update }: Props) {
       <Switch label="Range mode" checked={state.rangeMode} onChange={(value) => update("rangeMode", value)} />
     </SectionCard>
     <SectionCard title="Calendar" subtitle="Calendar-related picker behavior.">
+      <div className="space-y-4">
       <SegmentedControl label="Calendar density" value={state.calendarDensity} options={[
   {
     "value": "compact",
@@ -44,6 +45,7 @@ export default function CalendarSection({ state, update }: Props) {
   "bday-month",
   "bday-year"
 ]} onChange={(value) => update("autocomplete", value)} />
+    </div>
     </SectionCard>
     </div>
   );

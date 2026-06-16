@@ -13,6 +13,7 @@ type Props = {
 export default function AccessibilitySection({ state, update }: Props) {
   return (
     <SectionCard title="Accessibility" subtitle="ARIA, labels, language, and semantic guidance.">
+      <div className="space-y-4">
       <Select label="dir" value={state.dir} options={[
   "ltr",
   "rtl",
@@ -33,6 +34,7 @@ export default function AccessibilitySection({ state, update }: Props) {
   "search",
   "send"
 ]} onChange={(value) => update("enterKeyHint", value)} />
+    </div>
     </SectionCard>
   );
 }
