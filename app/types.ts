@@ -2,6 +2,7 @@ export type SectionId = "presets" | "basics" | "metadata" | "field" | "calendar"
 
 export type DatePickerStudioState = {
   label: string;
+  ariaLabel: string;
   description: string;
   helper: string;
   errorText: string;

@@ -109,6 +109,7 @@ export default function DatePickerComponent() {
             enterKeyHint={state.enterKeyHint}
             aria-invalid={invalid || undefined}
             aria-describedby={helpId}
+            aria-label={state.ariaLabel || undefined}
             onChange={(event) => setValue(event.target.value)}
             style={{ width: "100%", minWidth: 0, border: 0, outline: "none", background: "transparent", color: state.foreground, fontSize: state.inputSize }}
           />

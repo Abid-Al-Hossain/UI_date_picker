@@ -2,6 +2,7 @@ import type { StudioPreset, DatePickerStudioState } from "../types";
 
 export const DEFAULT_DATE_PICKER_STATE: DatePickerStudioState = {
   "label": "Launch date",
+  "ariaLabel": "",
   "description": "Pick a production launch date.",
   "helper": "Use native date constraints with accessible helper text.",
   "errorText": "Select a date inside the allowed range.",
